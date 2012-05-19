@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>  
+<head>  
+
+    <title></title>
+
+    <style>
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        .container {
+            margin: 20px;
+            border: 1px solid;
+            height: 500px;
+            width : 1000px;
+            overflow: auto;
+        }
+        td {
+            padding: 5px;
+        }
+
+        td .data { 
+            overflow: hidden; 
+        }
+
+        tr.odd {
+            background: #eee;
+        }
+
+        .col0 .data { width: 100px; }
+        .col1 .data { width: 50px; }
+        .col2 .data { width: 100px; }
+        .col3 .data { width: 50px; }
+        .col4 .data { width: 100px; }
+        .col5 .data { width: 50px; }
+        .col6 .data { width: 100px; }
+        .col7 .data { width: 50px; }
+        .col8 .data { width: 100px; }
+        .col9 .data { width: 50px; }
+        .col10 .data { width: 100px; }
+        .col11 .data { width: 50px; }
+        .col12 .data { width: 100px; }
+        .col13 .data { width: 50px; }
+        .col14 .data { width: 100px; }
+        .col15 .data { width: 50px; }
+        .col16 .data { width: 100px; }
+        .col17 .data { width: 50px; }
+        .col18 .data { width: 100px; }
+        .col19 .data { width: 50px; }
+
+        #title_test { 
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            width: 100px; 
+        }
+    </style>
+</head>  
+<body>  
+
+    <div class="container">
+
+        <table>
+            <thead></thead>
+            <tbody></tbody>
+        </table>
+
+    </div>
+
+    <button id="by_cell">By Cell</button>
+    <button id="by_table">By Table</button>
+    <button id="by_template">By Template</button>
+
+    <script src="assets/js/jquery-1.7.2.js" type="text/javascript"></script>  
+    <script src="assets/js/underscore.js" type="text/javascript"></script>  
+    <script src="assets/js/grid.js" type="text/javascript"></script>  
+
+
+    <div id="title_test"></div>
+
+
+</body>  
+</html>  
+
