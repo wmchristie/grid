@@ -1,6 +1,7 @@
 (function (app, $, _, undefined) {
 
-    var ByCell,
+    var 
+        ByCell,
         ByTable,
         ByTemplate,
         max = 100,
@@ -500,105 +501,11 @@
 
         var ticks = new Date().getTime();
 
-        data.row = _.memoize(function (r) {
-
-            var i = 0, 
-                limit = this.length;
-
-            for (; i < limit; i++) {
-
-                if (this[i].__min >= r && this[i].__max <= r
-            }
-
-            if (r === 0) {
-                return this[0];
-            }
-
-        });
-
-        data.count = 0;
-
-        _.each(data, function (item) {
-
-            count(item);
-            data.count += item.count;
-            item.offset = 0;
-
-            item.cell = _.memoize(function (c) {
-                
-            });
-
-        });
-
-
-        data.cell = function (r, c) {
-
-            var row = this.row(r);
-
-            return row.cell(c);
-
-        };
-
-        ticks = new Date().getTime() - ticks;
-
-        console.log(ticks, data.count);
+        console.log(new Date().getTime() - ticks);
 
         return;
 
         /*
-
-        map = [];
-        map[0] = [];
-
-        counts = [ 5, 5, 3 ];
-
-        count = 5;
-
-        1  -> map[0][0] = function () { return data[0]['values'][0]; };
-
-        1  -> map[0][0] = function () { return data[0].values[0]; };
-        2  -> map[0][1] = function () { return data[0].values[1]; };
-        3  -> map[0][2] = function () { return data[0].values[2]; };
-        4  -> map[0][3] = function () { return data[0].values[3]; };
-        5  -> map[0][4] = function () { return data[0].values[4]; };
-
-        count = 5;
-        6  -> map[0][5] = function () { return data[0]['items'][0]['values'][0]; };
-
-        6  -> map[0][5] = function () { return data[0].items[0].values[0]; };
-        7  -> map[0][6] = function () { return data[0].items[0].values[1]; };
-        8  -> map[0][7] = function () { return data[0].items[0].values[2]; };
-        9  -> map[0][8] = function () { return data[0].items[0].values[3]; };
-        10 -> map[0][9] = function () { return data[0].items[0].values[4]; };
-
-        count = 3;
-
-        11 -> map[0][10] = function () { return data[0]['items'][0]['items'][0]['values'][0]; };
-
-        11 -> map[0][10] = function () { return data[0].items[0].items[0].values[0]; };
-        12 -> map[0][11] = function () { return data[0].items[0].items[0].values[1]; };
-        13 -> map[0][12] = function () { return data[0].items[0].items[0].values[2]; };
-
-        function get (r, c) {
-        };
-
-
-
-        map[1] = [];
-
-        map[1][0];
-        map[1][1];
-        map[1][2];
-        map[1][3];
-        map[1][4];
-        map[1][5];
-        map[1][6];
-        map[1][7];
-        map[1][8];
-        map[1][9];
-        map[1][10];
-        map[1][11];
-        map[1][12];
 
 
         $('#by_cell').on('click', function () {
