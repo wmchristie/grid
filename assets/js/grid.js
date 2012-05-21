@@ -213,7 +213,7 @@
 
             list += '>';
 
-            list += rows[i].col(8, 20);
+            list += rows[i].col(8, 5);
 
             list += '</tr>';
 
