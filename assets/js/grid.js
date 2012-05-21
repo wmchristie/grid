@@ -6,7 +6,8 @@
         value : _.template('<td class="col<%= item.c %>"><div class="data"><span><%= item.value %></a></span></div></td>'),
         rowLabel : _.template('<td class="branch" colspan="<%= item.span %>"><div class="data"><span title="<%= item.value.replace(this.titleRegex, "") %>"><%= item.value %></span></div></td>'),
         twisty : _.template('<td class="twisty"><div class="data"><span><button type="button" data-record="<%= item.row %>" class="<%= item.state %> image twisty"><div class="body"><div class="west side"></div><div class="east side"></div><b></b></div></button></span></div></td>'),
-        blank : _.template('<td class="col<%= item.c %>" colspan=""><div class="data"><span></span></div></td>')
+        before : _.template('<td class="col<%= item.c %>" colspan="<%= item.span %>"><div class="data"><span></span></div></td>'),
+        after : _.template('<td class="col<%= item.c %>"><div class="data"><span></span></div></td>')
     };
 
     app.LabelRow = function (item, offset) {
@@ -35,7 +36,7 @@
                 limit,
                 v;
 
-            if (i < this.offset) {
+            if (i < offset) {
 
                 result = this.before({ 
                     span : (i + count) > offset ? offset - i : count,
@@ -44,11 +45,11 @@
 
             } 
 
-            i += count;
+            i += offset;
             v = i - offset;
-            limit = Math.min(max, count);
+            limit = Math.min(max, i + count);
 
-            while (i < max && i < count) {
+            while (i < limit) {
 
                 result += template({
                     c : i++,
@@ -60,6 +61,7 @@
             template = this.after;
 
             while (i < count) {
+                log += 'after - i: ' + i + '; count: ' + count + '\r\n';
                 result += template({ c : i++ });
             }
 
@@ -82,8 +84,8 @@
 
         titleRegex : /<[a-z\/][^>]*>/g,
 
-        before : app.gridTemplates.blank,
-        after : app.gridTemplates.blank,
+        before : app.gridTemplates.before,
+        after : app.gridTemplates.after,
         template : app.gridTemplates.value,
 
         col : function (i, count) {
@@ -94,15 +96,15 @@
                 template = this.before,
                 values = this.values,
                 v,
-                limit = Math.min(offset, count);
+                limit = Math.min(offset, i + count); // todo : this is buggy
 
-            while (i < limit) { // we can reduce this to a single test using Math.min()
+            while (i < limit) { 
                 result += template({ c : i++ });
             }
 
             template = this.template;
             v = i - offset;
-            limit = Math.min(max, count);
+            limit = Math.min(max, i + count); // todo : this is incorrect
 
             while (i < limit) {
 
@@ -115,7 +117,7 @@
 
             template = this.after;
 
-            while (i < count) {
+            while (i < count) { // todo : this is incorrect
                 result += template({ c : i++ });
             }
 
@@ -211,7 +213,7 @@
 
             list += '>';
 
-            list += rows[i].col(0, 8);
+            list += rows[i].col(8, 20);
 
             list += '</tr>';
 
