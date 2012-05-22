@@ -83111,6 +83111,6 @@
         "returnedRowCount":191
     };
 
-    app.data = data.Data;
+    app.data = data;
 
 }(window.app || (window.app = {}), jQuery, _))
