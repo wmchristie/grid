@@ -10,7 +10,7 @@
         blank : _.template('<td class="col<%= item.c %>"><div class="data"><span></span></div></td>'),
 
         head : _.template(
-            '<th class="col<%= item.ordinal %> <%= item.align %><%= item.sizable %><%= item.sortable %><%= item.sort %>">' +
+            '<th class="col<%= item.ordinal %><%= item.sizable %><%= item.sortable %><%= item.sort %>">' +
             '    <div class="cell">' +
             '        <div class="side west"></div>' +
             '        <div class="data">' +
@@ -29,7 +29,7 @@
     };
 
 
-    var show = function (dom, rows, colStart) {
+    var show = function (dom, head, rows, colStart) {
 
         var start = new Date();
 
@@ -74,17 +74,16 @@
         var markupTime,
             insertTime,
 
-            factory = new app.RowFactory(),
-            rows = factory.create(app.data.records),
-            head = app.createColumnHead(app.data.primary
+            rows = new app.RowFactory().create(app.data.records), 
+            head = new app.HeadFactory().create(app.data.primaryView),
             dom = app.gridDom(document.getElementById('grid_container')),
 
             colStart = 0;
 
-        show(dom, rows, colStart++);
+        show(dom, head, rows, colStart++);
 
         $('#by_cell').on('click', function () {
-            show(dom, rows, colStart++);
+            show(dom, head, rows, colStart++);
         });
 
     });

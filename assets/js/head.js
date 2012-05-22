@@ -6,6 +6,7 @@
             lookup = [],
 
             min = Math.min,
+            template = app.gridTemplates.head,
 
             titleRegex = /<[a-z\/][^>]*>/g;
 
@@ -28,7 +29,7 @@
 
                 for (; i < limit; i++) {
 
-                    result += template(column);
+                    result += template(lookup[i]);
 
                 }
 
@@ -55,15 +56,18 @@
 
     app.HeadFactory.prototype = {
 
-        create : function (columns) {
+        create : function (view) {
 
-            return app.createColumnHead(_.map(columns, function (column) {
+            return app.createColumnHead(_.map(view.columns, function (column) {
 
                 return {
+                    align : column.align,
                     name : column.name,
                     ordinal : column.ordinal,
                     sortable : column.sortable ? ' sortable' : '',
-
+                    sizable : column.sizable ? ' sizable' : '',
+                    sort : '',
+                    sortIndicator : ''
                 };
 
             }));
