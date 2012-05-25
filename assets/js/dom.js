@@ -2,15 +2,28 @@
 
     app.gridDom = function (container) {
 
-        var table,
+        var headTable,
+            bodyTable,
+            sizer,
+            portal,
             template = _.template('<table><<%= item.tag %>><%= item.markup %></<%= item.tag %>></table>'),
             write;
 
-        container.innerHTML = '<table><thead></thead><tbody></tbody></table>';
+        container.innerHTML = 
+            '<div class="portal">' +
+                '<table><thead></thead></table>' +
+                '<div class="scroll-sizer">' +
+                    '<table><tbody></tbody></table>' +
+                </div>' +
+            '</div>';
 
-        table = _.first(container.getElementsByTagName('table'));
+        headTable = container.getElementsByTagName('table')[0];
+        bodyTable = container.getElementsByTagName('table')[1];
 
-        function write (markup, tag) {
+        portal = $(container).children();
+        sizer = portal.find('.scoll-sizer');
+
+        function write (table, markup, tag) {
 
             var temp = document.createElement('div');
 
@@ -24,17 +37,39 @@
                 _.first(table.getElementsByTagName(tag)) // find the existing element
             );
 
-
         }
 
         return {
 
+            setPortalSize : function (height, width) {
+
+                portal.css({
+                    height : height,
+                    width : width
+                });
+
+                $table.css({
+                    height : height,
+                    width : width
+                });
+
+            },
+
+            setSizerSize : function (height, width) {
+
+                sizer.css({
+                    height : height,
+                    width : width
+                });
+
+            },
+
             writeBody : function (markup) {
-                write(markup, 'tbody');
+                write(bodyTable, markup, 'tbody');
             },
 
             writeHead : function (markup) {
-                write(markup, 'thead');
+                write(headTable, markup, 'thead');
             }
         
         };

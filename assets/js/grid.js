@@ -33,10 +33,10 @@
 
         var start = new Date();
 
-        var list = '';
-
         var rowCount = 21;
         var colCount = 5;
+
+        var list = '<tr><td><div class="scroll-sizer"></div></td></tr>';
 
         for (var i = 0; i < rowCount; i++) {
 
