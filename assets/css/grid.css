@@ -1,3 +1,8 @@
+body {
+    font-family: arial;
+    font-size: 11px;
+}
+
 .container {
     margin: 20px;
     border: 1px solid;
@@ -18,34 +23,36 @@ thead {
     top: 0;
 }
 
-tbody {
-    height: 474px;
-    overflow: auto;
-    position: absolute;
-    top: 26px;
-    width: 960px;
-}
-
 th {
     background: #00f;
     color: #fff;
 }
 
-.scroll-sizer {
-    height: 5000px;
+.portal {
+    bottom: 0;
     left: 0;
+    overflow: auto;
     position: absolute;
-    top: 0;
-    width: 5000px;
+    right: 0;
+    top: 26px;
+}
+
+.scroll-sizer {
+    position: absolute;
 }
 
 th .data,
 td .data { 
-    height: 24px;
-    padding: 0 5px;
+    height: 26px;
+    line-height: 26px;
+    margin-right: 5px;
+    padding: 0 3px 0 11px;
     overflow: hidden; 
     text-align: left;
     text-overflow: ellipsis;
+}
+
+.data span {
     white-space: nowrap;
 }
 
@@ -53,46 +60,9 @@ tr.odd {
     background: #eee;
 }
 
-.col0 .data { width: 200px; }
-.col1 .data { width: 250px; }
-.col2 .data { width: 200px; }
-.col3 .data { width: 250px; }
-.col4 .data { width: 200px; }
-.col5 .data { width: 250px; }
-.col6 .data { width: 200px; }
-.col7 .data { width: 250px; }
-.col8 .data { width: 200px; }
-.col9 .data { width: 250px; }
-.col10 .data { width: 200px; }
-.col11 .data { width: 250px; }
-.col12 .data { width: 200px; }
-.col13 .data { width: 250px; }
-.col14 .data { width: 200px; }
-.col15 .data { width: 250px; }
-.col16 .data { width: 200px; }
-.col17 .data { width: 250px; }
-.col18 .data { width: 200px; }
-.col19 .data { width: 250px; }
-.col20 .data { width: 200px; }
-.col21 .data { width: 200px; }
-.col22 .data { width: 200px; }
-.col23 .data { width: 200px; }
-.col24 .data { width: 200px; }
-.col25 .data { width: 200px; }
-.col26 .data { width: 200px; }
-.col27 .data { width: 200px; }
-.col28 .data { width: 200px; }
-.col29 .data { width: 200px; }
-.col30 .data { width: 200px; }
-.col31 .data { width: 200px; }
-.col32 .data { width: 200px; }
-.col33 .data { width: 200px; }
-.col34 .data { width: 200px; }
-.col35 .data { width: 200px; }
-.col36 .data { width: 200px; }
-.col37 .data { width: 200px; }
-.col38 .data { width: 200px; }
-.col39 .data { width: 200px; }
+tr.active {
+    background : #0ff;
+}
 
 #title_test { 
     overflow: hidden;

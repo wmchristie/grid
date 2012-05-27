@@ -28,7 +28,7 @@
                     colspan,
                     v;
 
-                if (i === 0 && hasRowLabel) { // todo : how do we set the total width of the colspan'ed cells when only row labels are being displayed
+                if (i === 0 && hasRowLabel) { 
 
                     colspan = min(count, offset - i);
 
@@ -126,6 +126,39 @@
             this.i = 0;
 
             this.addRecords(records, 0, result);
+
+            result.getRange = function (top, height) {
+
+                return {
+                    rowStart : Math.floor(top / 26),
+                    rowCount : Math.ceil(height / 26) + 1
+                };
+
+            };
+
+            result.markup = function (rowStart, rowCount, colStart, colCount) {
+
+                list = '';
+
+                for (i = rowStart; i < rowCount; i++) {
+
+                    list += '<tr';
+
+                    if (i % 2 !== 0) {
+                        list += ' class="odd"'; 
+                    }
+
+                    list += '>';
+
+                    list += rowMarkup[i].col(colStart, colCount);
+
+                    list += '</tr>';
+
+                }
+
+                return list;
+
+            };
 
             return result;
 

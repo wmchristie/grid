@@ -28,63 +28,104 @@
         headGroup : _.template('<th></th>')
     };
 
+    app.gridStyle = function (gridId, widthInfos) {
 
-    var show = function (dom, head, rows, colStart) {
+        var id = _.uniqueId('gridstyle'),
 
-        var start = new Date();
+            stylesheet,
 
-        var rowCount = 21;
-        var colCount = 5;
+            //groupLastColumnStyle = 'border-right:1px solid #9da6b2; margin-right:0; padding-right:7px;', 
 
-        var list = '<tr><td><div class="scroll-sizer"></div></td></tr>';
+            setWidth,
+            cssRules,
+            template;
+        
+        template = _.template(
+            '<style id="<%= item.id %>" type="text/css">\r\n' +
+            '<% _.each(item.widthInfos, function (widthInfo) { %>' +
+            '    #<%= item.gridId %> .col<%= widthInfo.index %> .data { width: <%= widthInfo.data %>px; }\r\n' +
+            '<% }); %>' +
+            //'    #<%= item.gridId %> .branch .data {}\r\n' +
+            '</style>\r\n'
+        );
 
-        for (var i = 0; i < rowCount; i++) {
-
-            list += '<tr';
-
-            if (i % 2 !== 0) {
-                list += ' class="odd"'; 
-            }
-
-            list += '>';
-
-            list += rows[i].col(colStart, colCount);
-
-            list += '</tr>';
-
+            
+        if (widthInfos.length === 0) {
+            return;
         }
 
-        markupTime = new Date().getTime() - start.getTime();
+        stylesheet = $(template({
+            id : id,
+            gridId : gridId,
+            widthInfos : widthInfos
+        })).appendTo($('head'));
 
-        start = new Date();
+        _.each(document.styleSheets, function (sheet) {
+        
+            if (sheet.id === id || (sheet.ownerNode && sheet.ownerNode.id === id)) {
+                cssRules = sheet.cssRules ? sheet.cssRules : sheet.rules; 
+            }
 
-        dom.writeBody(list);
+        });
 
-        dom.writeHead(head.col(colStart, colCount));
+        setWidth = function (w) {
+            this.rule.css('width', w);
+        };
 
-        insertTime = new Date().getTime() - start.getTime();
+        _.each(widthInfos, function (widthInfo, i) {
+            widthInfo.rule = $(cssRules[i]);
+        });
 
-        console.log(markupTime, ' ', insertTime, ' ', markupTime + insertTime);
+        //this._branchStyles = $(_.last(cssRules));
+    
+
+        return {
+
+            rules : function () {
+                return cssRules;
+            },
+
+            destroy : function () {
+                stylesheet.remove();
+                stylesheet = null;
+            }
+
+        };
 
     };
-
 
     $(function () {
 
         var markupTime,
             insertTime,
 
-            rows = new app.RowFactory().create(app.data.records), 
-            head = new app.HeadFactory().create(app.data.primaryView),
-            dom = app.gridDom(document.getElementById('grid_container')),
+            colStart = 0,
 
-            colStart = 0;
+            container = document.getElementById('grid_container'),
 
-        show(dom, head, rows, colStart++);
+            gridId = container.id || (container.id = _.uniqueId('grid')),
 
-        $('#by_cell').on('click', function () {
-            show(dom, head, rows, colStart++);
-        });
+            rowMarkup = new app.RowFactory().create(app.data.records), 
+            headMarkup = new app.HeadFactory().create(app.data.primaryView),
+            dom = app.gridDom(container),
+
+            columns = new app.GridColumns(app.data.primaryView.columns, 19),
+
+            stylesheet = app.gridStyle(gridId, columns.getWidthInfos()),
+
+            scrollSizer = new app.GridScrollSizer({
+                element : dom.scrollSizer(),
+                rowHeight : 25
+            }),
+            
+            render = app.gridRender(dom, columns, rowMarkup, headMarkup);
+
+        columns.setCssRules(stylesheet.rules());
+
+        scrollSizer.sizeToColumns(columns.getWidthInfos());
+        scrollSizer.sizeToRows(rowMarkup);
+
+        render.show();
 
     });
 
