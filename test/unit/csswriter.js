@@ -17,7 +17,16 @@ $(function () {
 
     });
 
-    // test('should expose the value set on the style element id attribute');
+    test('should expose the value set on the style element id attribute', function () {
+
+        var writer = app.cssWriter('body { color:#fff; } a { color:#00f; }');
+        var id = writer.id;
+
+        ok(_.any(document.getElementsByTagName('style'), function (element) {
+            return element.id === id;
+        }), 'A style element should exist on the page with id of ' + id);
+
+    });
 
     test('should remove the style element from the document', function () {
 
