@@ -58,4 +58,15 @@ $(function () {
         
     });
 
+    test('should update the stylesheet with new rules', function () {
+
+        var writer = app.cssWriter('body { color:#fff; } a { color:#00f; }');
+        writer.update('#foo { color:#fff; }');
+
+        ok(writer.rules.length === 1, 'expected 1 rule but there were ' + writer.rules.length);
+        ok(writer.rules[0].selectorText === '#foo', 'expected the selector text to be "#foo" but it was "' + writer.rules[0].selectorText + '"');
+
+    });
+
+
 });
