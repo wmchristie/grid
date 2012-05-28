@@ -17,4 +17,20 @@ $(function () {
 
     });
 
+    // test('should expose the value set on the style element id attribute');
+
+    test('should remove the style element from the document', function () {
+
+        var writer = app.cssWriter('body { color:#fff; } a { color:#00f; }');
+        var id = writer.id;
+
+        writer.destroy();
+
+        ok(!_.any(document.getElementsByTagName('style'), function (element) {
+            return element.id === id;
+        }), 'No style elements should exist on the page with id of ' + id);
+
+    });
+
+
 });
