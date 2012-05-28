@@ -26,7 +26,7 @@
             rulesAsjQuery : function () {
 
                 var result = [],
-                    rules = this.rules;
+                    rules = this.rules,
                     i, 
                     limit;
 
