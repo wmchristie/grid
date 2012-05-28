@@ -41,5 +41,21 @@ $(function () {
 
     });
 
+    test('should return an array of rules each wrapped in jQuery', function () {
+
+        var writer = app.cssWriter('body { color:#fff; } a { color:#00f; }');
+        var rules = writer.rules;
+        var $rules = writer.rulesAsjQuery();
+
+        ok(rules.length === $rules.length, 'rules and $rules should be the same length');
+        ok(_.all($rules, function (rule) {
+            return rule instanceof $;
+        }), 'each rule should be an instance of jQuery');
+        
+        ok(_.all($rules, function (rule, i) {
+            return rule[0] === rules[i];
+        }), 'each jquery should contain the corresponding rule');
+        
+    });
 
 });
