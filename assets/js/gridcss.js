@@ -52,4 +52,10 @@
 
     };
 
+                '<% _.each(data.items, function (item) { %>' +
+                '    <%= this.selector(item) %> { <%= this.rules(item) %>}\r\n' +
+                '<% }, this); %>' +
+                '<%= this.additionalRules() %>' +
+
+
 }(window.app || (window.app = {}), jQuery, _))
