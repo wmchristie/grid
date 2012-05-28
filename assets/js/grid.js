@@ -28,76 +28,13 @@
         headGroup : _.template('<th></th>')
     };
 
-    app.gridStyle = function (gridId, widthInfos) {
-
-        var id = _.uniqueId('gridstyle'),
-
-            stylesheet,
-
-            //groupLastColumnStyle = 'border-right:1px solid #9da6b2; margin-right:0; padding-right:7px;', 
-
-            setWidth,
-            cssRules,
-            template;
-        
-        template = _.template(
-            '<style id="<%= item.id %>" type="text/css">\r\n' +
-            '<% _.each(item.widthInfos, function (widthInfo) { %>' +
-            '    #<%= item.gridId %> .col<%= widthInfo.index %> .data { width: <%= widthInfo.data %>px; }\r\n' +
-            '<% }); %>' +
-            //'    #<%= item.gridId %> .branch .data {}\r\n' +
-            '</style>\r\n'
-        );
-
-            
-        if (widthInfos.length === 0) {
-            return;
-        }
-
-        stylesheet = $(template({
-            id : id,
-            gridId : gridId,
-            widthInfos : widthInfos
-        })).appendTo($('head'));
-
-        _.each(document.styleSheets, function (sheet) {
-        
-            if (sheet.id === id || (sheet.ownerNode && sheet.ownerNode.id === id)) {
-                cssRules = sheet.cssRules ? sheet.cssRules : sheet.rules; 
-            }
-
-        });
-
-        setWidth = function (w) {
-            this.rule.css('width', w);
-        };
-
-        _.each(widthInfos, function (widthInfo, i) {
-            widthInfo.rule = $(cssRules[i]);
-        });
-
-        //this._branchStyles = $(_.last(cssRules));
-    
-
-        return {
-
-            rules : function () {
-                return cssRules;
-            },
-
-            destroy : function () {
-                stylesheet.remove();
-                stylesheet = null;
-            }
-
-        };
-
-    };
-
     $(function () {
 
         var markupTime,
             insertTime,
+
+            rowHeight = 25,
+            cellPadding = 19,
 
             colStart = 0,
 
@@ -105,22 +42,40 @@
 
             gridId = container.id || (container.id = _.uniqueId('grid')),
 
-            rowMarkup = new app.RowFactory().create(app.data.records), 
+            rowMarkup = new app.RowFactory(rowHeight).create(app.data.records), 
             headMarkup = new app.HeadFactory().create(app.data.primaryView),
             dom = app.gridDom(container),
 
-            columns = new app.GridColumns(app.data.primaryView.columns, 19),
+            columns = new app.GridColumns(app.data.primaryView.columns, cellPadding),
 
-            stylesheet = app.gridStyle(gridId, columns.getWidthInfos()),
+            cssRuleBuilder = new app.CssRuleBuilder();
+
+            cssWriter = new app.CssWriter(),
 
             scrollSizer = new app.GridScrollSizer({
                 element : dom.scrollSizer(),
-                rowHeight : 25
+                rowHeight : rowHeight
             }),
             
             render = app.gridRender(dom, columns, rowMarkup, headMarkup);
 
-        columns.setCssRules(stylesheet.rules());
+        cssRuleBuilder.addRuleFactory('width', function (item) {
+            return item.data + 'px'
+        });
+
+        cssRuleBuilder.addRuleFactory('text-align', function (item) {
+            return item.align;
+        });
+
+        cssRuleBuilder.setSelectorFactory(function (item) {
+            return '#' + gridId + ' .col' + item.index + ' .data';
+        });
+
+        cssRuleBuilder.setAdditionalRules('    #' + gridId + ' .branch .data {}');
+
+        cssWriter.create(columns.getWidthInfos(), cssRuleBuilder);
+
+        columns.setCssRules(cssWriter.getRules());
 
         scrollSizer.sizeToColumns(columns.getWidthInfos());
         scrollSizer.sizeToRows(rowMarkup);

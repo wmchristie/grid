@@ -1,9 +1,4 @@
-body {
-    font-family: arial;
-    font-size: 11px;
-}
-
-.container {
+.data-grid {
     margin: 20px;
     border: 1px solid;
     height: 500px;
@@ -12,62 +7,62 @@ body {
     position: relative;
 }
 
-table {
-    border-collapse: collapse;
-    position: absolute;
-    overflow: hidden;
-}
+    .data-grid table {
+        border-collapse: collapse;
+        position: absolute;
+        overflow: hidden;
+    }
 
-thead {
-    position: absolute;
-    top: 0;
-}
+    .data-grid thead {
+        position: absolute;
+        top: 0;
+    }
 
-th {
-    background: #00f;
-    color: #fff;
-}
+    .data-grid tr.odd {
+        background: #eee;
+    }
 
-.portal {
-    bottom: 0;
-    left: 0;
-    overflow: auto;
-    position: absolute;
-    right: 0;
-    top: 26px;
-}
+    .data-grid tr.active {
+        background : #0ff;
+    }
 
-.scroll-sizer {
-    position: absolute;
-}
+    .data-grid th,
+    .data-grid td {
+        padding: 0;
+        vertical-align: middle;
+    }
 
-th .data,
-td .data { 
-    height: 26px;
-    line-height: 26px;
-    margin-right: 5px;
-    padding: 0 3px 0 11px;
-    overflow: hidden; 
-    text-align: left;
-    text-overflow: ellipsis;
-}
+    .data-grid th {
+        background: #00f;
+        color: #fff;
+    }
 
-.data span {
-    white-space: nowrap;
-}
+        .data-grid th > .cell > .data,
+        .data-grid td > .data { 
+            height: 26px;
+            line-height: 26px;
+            margin-right: 5px;
+            padding: 0 3px 0 11px;
+            overflow: hidden; 
+            text-align: left;
+            text-overflow: ellipsis;
+        }
 
-tr.odd {
-    background: #eee;
-}
+            .data-grid th > .cell > .data > span,
+            .data-grid td > .data > span {
+                white-space: nowrap;
+            }
 
-tr.active {
-    background : #0ff;
-}
+    .data-grid .portal {
+        bottom: 0;
+        left: 0;
+        overflow: auto;
+        position: absolute;
+        right: 0;
+        top: 26px;
+    }
 
-#title_test { 
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    width: 100px; 
-}
+    .data-grid .scroll-sizer {
+        position: absolute;
+    }
 

@@ -17,19 +17,20 @@
         });
 
         // we are assuming that the ordinals are sequential with no gaps, 
-        // but they can be negative which is why we don't use lookup.length
-        max = lookup[lookup.length - 1].ordinal;
+        // but they can be negative which is why we don't use the value 
+        // of lookup.length to find the max.
+        max = lookup[lookup.length - 1].ordinal + 1;
 
         return {
 
-            col : function (i, count) {
+            col : function (col, count) {
 
-                var limit = min(i + count, max);
+                var limit = min(col + count, max);
                     result = '';
 
-                for (; i < limit; i++) {
+                for (; col < limit; col++) {
 
-                    result += template(lookup[i]);
+                    result += template(lookup[col]);
 
                 }
 

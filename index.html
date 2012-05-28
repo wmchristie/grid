@@ -6,14 +6,25 @@
 
     <link href="assets/css/grid.css" rel="stylesheet" type="text/css" />
 
+    <style type="text/css">
+
+        body {
+            font-family: arial;
+            font-size: 11px;
+            position: relative;
+        }
+
+        #grid_container {
+            width : 90%;
+            margin: 20px auto;
+        }
+
+    </style>
+
 </head>  
 <body>  
 
-    <div id="grid_container" class="container"></div>
-
-    <button id="by_cell">By Cell</button>
-    <button id="by_table">By Table</button>
-    <button id="by_template">By Template</button>
+    <div id="grid_container"></div>
 
     <script src="assets/js/jquery-1.7.2.js" type="text/javascript"></script>  
     <script src="assets/js/underscore.js" type="text/javascript"></script>  
@@ -22,12 +33,10 @@
     <script src="assets/js/dom.js" type="text/javascript"></script>  
     <script src="assets/js/columns.js" type="text/javascript"></script>  
     <script src="assets/js/scrollSizer.js" type="text/javascript"></script>  
+    <script src="assets/js/style.js" type="text/javascript"></script>  
     <script src="assets/js/render.js" type="text/javascript"></script>  
     <script src="assets/js/row.js" type="text/javascript"></script>  
     <script src="assets/js/head.js" type="text/javascript"></script>  
-
-    <div id="title_test"></div>
-
 
 </body>  
 </html>  

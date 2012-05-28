@@ -11,6 +11,7 @@
 
             widthInfo = widthInfos[i] = {
                 index : i,
+                align : def.align,
                 td : def.pixelWidth + paddingSize,
                 data : def.pixelWidth,
                 auto : def.autoWidth,
@@ -100,7 +101,7 @@
 
         },
 
-        getCount : function (width, left) {
+        getCount : function (left, width) {
 
             var widthInfos = this._widthInfos,
                 max = widthInfos.length,
@@ -121,8 +122,16 @@
 
         },
 
-        getCurrent : function () {
-            return this._currentWidthInfo;
+        getWidthInfoAt : function (left) {
+
+            var current = this._currentWidthInfo,
+                changed = current.left > left || current.right < left;
+
+            if (changed) {
+                this._currentWidthInfo = this._findWidthInfo(left);
+            }
+
+            return this._currentWidthInfo
         },
 
         getWidthInfos : function () {
@@ -135,23 +144,8 @@
                 widthInfo.rule = rules[i];
             });
 
-        },
-
-        setCurrent : function (pixel) {
-
-            var current = this._currentWidthInfo,
-                changed = current.left > pixel || current.right < pixel;
-
-            if (changed) {
-                this._currentWidthInfo = this._findWidthInfo(pixel);
-            }
-
-            return changed;
-
         }
 
     };
-
-
 
 }(window.app || (window.app = {}), jQuery, _))

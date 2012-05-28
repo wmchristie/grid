@@ -2,35 +2,16 @@
 
     app.gridDom = function (container) {
 
-        var headTable,
+        var gridClassName = 'data-grid',
+            headTable,
             bodyTable,
-            head,
+            thead,
             body,
             sizer,
             portal,
             template = _.template('<table><<%= item.tag %>><%= item.markup %></<%= item.tag %>></table>'),
-            write;
-
-        container.innerHTML = 
-            '<table><thead></thead></table>' +
-            '<div class="portal">' +
-                '<div class="scroll-sizer">' +
-                    '<table><tbody></tbody></table>' +
-                '</div>' +
-            '</div>';
-
-        headTable = container.getElementsByTagName('table')[0];
-        bodyTable = container.getElementsByTagName('table')[1];
-
-        portal = _.find(container.childNodes, function (node) {
-            return node.className === 'portal';
-        });
-
-        $(bodyTable).delegate('tr', 'mouseover', function (e) {
-            $(this).addClass('active');
-        }).delegate('tr', 'mouseout', function (e) {
-            $(this).removeClass('active');
-        });
+            write,
+            classWasAdded;
 
         function write (table, markup, tag) {
 
@@ -53,14 +34,45 @@
 
         }
 
+        if ((classWasAdded = ! $(container).hasClass(gridClassName))) {
+            $(container).addClass('data-grid');
+        }
+
+        container.innerHTML = 
+            '<table><thead></thead></table>' +
+            '<div class="portal">' +
+                '<div class="scroll-sizer">' +
+                    '<table><tbody></tbody></table>' +
+                '</div>' +
+            '</div>';
+
+        headTable = container.getElementsByTagName('table')[0];
+        bodyTable = container.getElementsByTagName('table')[1];
+
+        thead = headTable.firstChild;
+
+        portal = _.find(container.childNodes, function (node) {
+            return node.className === 'portal';
+        });
+
         return {
 
             bodyTable : function () {
                 return bodyTable;
             },
 
-            head : function () {
-                return head;
+            destroy : function () {
+
+                container.empty();
+
+                if (classWasAdded) {
+                    container.removeClass('data-grid');
+                }
+
+            },
+
+            thead : function () {
+                return thead;
             },
 
             portal : function () {
@@ -76,7 +88,7 @@
             },
 
             writeHead : function (markup) {
-                return head = write(headTable, markup, 'thead');
+                return thead = write(headTable, markup, 'thead');
             }
         
         };

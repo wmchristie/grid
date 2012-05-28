@@ -89,10 +89,12 @@
 
     };
 
-    app.RowFactory = function () {};
+    app.RowFactory = function (rowHeight) {
+        this._rowHeight = rowHeight;
+    };
     app.RowFactory.prototype = {
 
-        addRecords : function (records, offset, result) {
+        _addRecords : function (records, offset, result) {
 
             var i = 0,
                 limit = records.length,
@@ -112,7 +114,7 @@
                 result[this.i++] = app.createRow(record, offset);
 
                 if (record.nodes) {
-                    this.addRecords(record.nodes, nextOffset, result);
+                    this._addRecords(record.nodes, nextOffset, result);
                 }
 
             }
@@ -121,42 +123,52 @@
 
         create : function (records, count) {
 
-            var result = new Array(count);
+            var result = new Array(count),
+                rowHeight = this._rowHeight,
+                
+                min = Math.min,
+                floor = Math.floor,
+                ceil = Math.ceil;
 
             this.i = 0;
 
-            this.addRecords(records, 0, result);
+            this._addRecords(records, 0, result);
+
+            result.rowHeight = function () {
+                return rowHeight;
+            };
 
             result.getRange = function (top, height) {
 
                 return {
-                    rowStart : Math.floor(top / 26),
-                    rowCount : Math.ceil(height / 26) + 1
+                    start : floor(top / rowHeight),
+                    count : ceil(height / rowHeight)
                 };
 
             };
 
-            result.markup = function (rowStart, rowCount, colStart, colCount) {
+            result.markup = function (row, rowCount, col, colCount) {
 
-                list = '';
+                var markup = '',
+                    limit = min(row + rowCount, this.length);
 
-                for (i = rowStart; i < rowCount; i++) {
+                for (; row < limit; row++) {
 
-                    list += '<tr';
+                    markup += '<tr';
 
-                    if (i % 2 !== 0) {
-                        list += ' class="odd"'; 
+                    if (!(row & 1)) {
+                        markup += ' class="odd"'; 
                     }
 
-                    list += '>';
+                    markup += '>';
 
-                    list += rowMarkup[i].col(colStart, colCount);
+                    markup += this[row].col(col, colCount);
 
-                    list += '</tr>';
+                    markup += '</tr>';
 
                 }
 
-                return list;
+                return markup;
 
             };
 
