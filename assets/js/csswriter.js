@@ -57,13 +57,13 @@
 
                 element = $(markup).appendTo($('head'));
 
-                stylesheets = document.stylesheets;
+                stylesheets = document.styleSheets;
 
                 for (i = 0, limit = stylesheets.length; i < limit; i++) {
 
                     stylesheet = stylesheets[i];
 
-                    if (stylesheet.id === this._id || (stylesheet.ownerNode && stylesheet.ownerNode.id === this._id)) {
+                    if (stylesheet.id === id || (stylesheet.ownerNode && stylesheet.ownerNode.id === id)) {
                         break;
                     } else if (i === limit - 1) {
                         throw 'could not find the stylesheet that we created: id = ' + id;
@@ -77,7 +77,7 @@
 
         };
 
-        update(css);
+        api.update(css);
 
         return api;
 
