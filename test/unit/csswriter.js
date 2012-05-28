@@ -2,8 +2,8 @@ $(function () {
 
     module("cssWriter");
 
-    test("fail", function () {
-        ok(false, 'this should fail');
+    test("should be defined on the app object", function () {
+        ok(window.app.cssWriter, 'cssWriter method is defined');
     });
 
 });
