@@ -1,4 +1,5 @@
 (function (app, $, _, undefined) {
+    'use strict';
 
     _.templateSettings.variable = 'item';
 
@@ -48,7 +49,7 @@
 
             columns = new app.GridColumns(app.data.primaryView.columns, cellPadding),
 
-            cssRuleBuilder = new app.CssRuleBuilder();
+            cssRuleBuilder = new app.CssRuleBuilder(),
 
             cssWriter = new app.CssWriter(),
 
@@ -60,7 +61,7 @@
             render = app.gridRender(dom, columns, rowMarkup, headMarkup);
 
         cssRuleBuilder.addRuleFactory('width', function (item) {
-            return item.data + 'px'
+            return item.data + 'px';
         });
 
         cssRuleBuilder.addRuleFactory('text-align', function (item) {
@@ -84,4 +85,4 @@
 
     });
 
-}(window.app || (window.app = {}), jQuery, _))
+}(window.app || (window.app = {}), jQuery, _));

@@ -1,4 +1,5 @@
 (function (app, $, _, undefined) {
+    'use strict';
 
     app.GridScrollSizer = function (options) {
 
@@ -22,4 +23,4 @@
 
     };
 
-}(window.app || (window.app = {}), jQuery, _))
+}(window.app || (window.app = {}), jQuery, _));

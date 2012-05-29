@@ -1,9 +1,10 @@
 (function (app, $, _, undefined) {
+    'use strict';
 
     app.GridColumns = function (defs, paddingSize) {
 
         var widthInfos = this._widthInfos = [],
-            widthInfo;
+            widthInfo,
             position = 0,
             previous = 0;
 
@@ -38,7 +39,8 @@
 
         _findWidthInfo : function (pixel) {
 
-            var widthInfoIndex = this._widthInfoIndex,
+            var widthInfo,
+                widthInfoIndex = this._widthInfoIndex,
                 lessThanIndex = this._lessThanIndex,
                 greaterThanIndex = this._greaterThanIndex,
                 
@@ -113,7 +115,7 @@
 
             while (i < max && width > 0) {
 
-                count++
+                count++;
                 width -= widthInfos[i++].td;
 
             }
@@ -131,7 +133,7 @@
                 this._currentWidthInfo = this._findWidthInfo(left);
             }
 
-            return this._currentWidthInfo
+            return this._currentWidthInfo;
         },
 
         getWidthInfos : function () {
@@ -148,4 +150,4 @@
 
     };
 
-}(window.app || (window.app = {}), jQuery, _))
+}(window.app || (window.app = {}), jQuery, _));

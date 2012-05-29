@@ -1,4 +1,5 @@
 (function (app, $, _, undefined) {
+    'use strict';
 
     app.createColumnHead = function (columns) {
 
@@ -25,7 +26,7 @@
 
             col : function (col, count) {
 
-                var limit = min(col + count, max);
+                var limit = min(col + count, max),
                     result = '';
 
                 for (; col < limit; col++) {
@@ -77,4 +78,4 @@
 
     }
 
-}(window.app || (window.app = {}), jQuery, _))
+}(window.app || (window.app = {}), jQuery, _));

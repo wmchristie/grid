@@ -1,4 +1,5 @@
 (function (app, $, _, undefined) {
+    'use strict';
 
     app.gridRender = function (dom, columns, bodyMarkupBuilder, headMarkupBuilder) {
 
@@ -102,4 +103,4 @@
         
     };
 
-}(window.app || (window.app = {}), jQuery, _))
+}(window.app || (window.app = {}), jQuery, _));

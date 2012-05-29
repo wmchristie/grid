@@ -1,4 +1,5 @@
-(function (app, $, undefined) {
+(function (app, $, _, undefined) {
+    'use strict';
 
     app.cssWriter = function (css) {
 
@@ -42,7 +43,6 @@
 
                 var stylesheets,
                     stylesheet,
-                    testSheet,
                     markup,
                     i, 
                     limit;
@@ -83,4 +83,4 @@
 
     };
 
-}(window.app || (window.app = {}), jQuery, _))
+}(window.app, jQuery, _));

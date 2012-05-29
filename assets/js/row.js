@@ -1,4 +1,5 @@
 (function (app, $, _, undefined) {
+    'use strict';
 
     app.createRow = function (item) {
 
@@ -24,6 +25,7 @@
 
                 var result = '',
                     template,
+                    limit,
                     maxLimit = i + count,
                     colspan,
                     v;
@@ -179,4 +181,4 @@
     };
 
 
-}(window.app || (window.app = {}), jQuery, _))
+}(window.app || (window.app = {}), jQuery, _));

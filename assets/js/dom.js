@@ -1,4 +1,5 @@
 (function (app, $, _, undefined) {
+    'use strict';
 
     app.gridDom = function (container) {
 
@@ -10,10 +11,9 @@
             sizer,
             portal,
             template = _.template('<table><<%= item.tag %>><%= item.markup %></<%= item.tag %>></table>'),
-            write,
             classWasAdded;
 
-        function write (table, markup, tag) {
+        function write(table, markup, tag) {
 
             var temp = document.createElement('div'),
                 newNode;
@@ -95,4 +95,4 @@
 
     };
 
-}(window.app || (window.app = {}), jQuery, _))
+}(window.app || (window.app = {}), jQuery, _));
