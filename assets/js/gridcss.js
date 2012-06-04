@@ -1,8 +1,27 @@
 (function (app, $, _, undefined) {
-
+    'use strict';
 
     // The following styles can be added the the grouping functionality is added via extension:
     //groupLastColumnStyle = 'border-right:1px solid #9da6b2; margin-right:0; padding-right:7px;', 
+    //
+    
+    app.gridCss = function (gridId, columns) {
+
+        var rules,
+            cssWriter,
+            template = app.gridTemplates.gridCss;
+
+        cssWriter = app.cssWriter(template({
+            gridId : gridId,
+            columns : columns.getWidthInfos()
+        }));
+
+        rules = cssWriter.rulesAsjQuery();
+        
+        return {
+            rules : rules
+        };
+    };
 
     app.CssRuleBuilder = function () {
         this.clear();
@@ -51,11 +70,11 @@
         }
 
     };
-
+/*
                 '<% _.each(data.items, function (item) { %>' +
                 '    <%= this.selector(item) %> { <%= this.rules(item) %>}\r\n' +
                 '<% }, this); %>' +
                 '<%= this.additionalRules() %>' +
+*/
 
-
-}(window.app || (window.app = {}), jQuery, _))
+}(window.app || (window.app = {}), jQuery, _));

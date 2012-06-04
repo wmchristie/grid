@@ -1,4 +1,6 @@
+/*global module test ok app */
 $(function () {
+    'use strict';
 
     module('cssWriter');
 
@@ -8,8 +10,8 @@ $(function () {
 
     test('should return the rules', function () {
 
-        var writer = app.cssWriter('body { color:#fff; } a { color:#00f; }');
-        var rules = writer.rules;
+        var writer = app.cssWriter('body { color:#fff; } a { color:#00f; }'),
+            rules = writer.rules;
 
         ok(rules.length === 2, 'expected 2 rules but there were ' + rules.length);
         ok(rules[0].selectorText === 'body', 'expected the first rule selector to be "body" but was "' + rules[0].selectorText + '"');
@@ -19,8 +21,8 @@ $(function () {
 
     test('should expose the value set on the style element id attribute', function () {
 
-        var writer = app.cssWriter('body { color:#fff; } a { color:#00f; }');
-        var id = writer.id;
+        var writer = app.cssWriter('body { color:#fff; } a { color:#00f; }'),
+            id = writer.id;
 
         ok(_.any(document.getElementsByTagName('style'), function (element) {
             return element.id === id;
@@ -30,8 +32,8 @@ $(function () {
 
     test('should remove the style element from the document', function () {
 
-        var writer = app.cssWriter('body { color:#fff; } a { color:#00f; }');
-        var id = writer.id;
+        var writer = app.cssWriter('body { color:#fff; } a { color:#00f; }'),
+            id = writer.id;
 
         writer.destroy();
 
@@ -43,9 +45,9 @@ $(function () {
 
     test('should return an array of rules each wrapped in jQuery', function () {
 
-        var writer = app.cssWriter('body { color:#fff; } a { color:#00f; }');
-        var rules = writer.rules;
-        var $rules = writer.rulesAsjQuery();
+        var writer = app.cssWriter('body { color:#fff; } a { color:#00f; }'),
+            rules = writer.rules,
+            $rules = writer.rulesAsjQuery();
 
         ok(rules.length === $rules.length, 'rules and $rules should be the same length');
         ok(_.all($rules, function (rule) {
@@ -61,6 +63,7 @@ $(function () {
     test('should update the stylesheet with new rules', function () {
 
         var writer = app.cssWriter('body { color:#fff; } a { color:#00f; }');
+
         writer.update('#foo { color:#fff; }');
 
         ok(writer.rules.length === 1, 'expected 1 rule but there were ' + writer.rules.length);

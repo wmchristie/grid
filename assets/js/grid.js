@@ -26,7 +26,13 @@
             '</th>'
         ),
 
-        headGroup : _.template('<th></th>')
+        headGroup : _.template('<th></th>'),
+
+        gridCss : _.template(
+            '<% _.each(item.columns, function (col) { %>' +
+            '   #<%= item.gridId %> .col<%= col.index %> .data { width: <%= col.width %>; }' +
+            '<% } %>'
+        )
     };
 
     $(function () {

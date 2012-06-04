@@ -83,4 +83,4 @@
 
     };
 
-}(window.app, jQuery, _));
+}(window.app || (window.app = {}), jQuery, _));
