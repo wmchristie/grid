@@ -23,12 +23,16 @@ $(function () {
 
         _.each(infos, function (info, i) {
 
-            var style = css.rules[i].style,
+            var rule = css.rules[i], 
+                style = rule.style,
                 width = style.width,
                 align = style.textAlign;
 
             ok(width === info.width + 'px', 'expected ' + info.width + 'px but was ' + width);
             ok(align === info.align, 'expected ' + info.align + ' but was ' + align);
+
+            ok(rule.cssText.indexOf('#' + gridId) === 0, 'expected the selector to start with "#' + gridId + '"');
+
         });
     });
 
