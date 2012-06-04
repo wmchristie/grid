@@ -16,10 +16,8 @@
             columns : columns.getWidthInfos()
         }));
 
-        rules = cssWriter.rulesAsjQuery();
-        
         return {
-            rules : rules
+            rules : cssWriter.rules
         };
     };
 

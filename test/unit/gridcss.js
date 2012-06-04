@@ -3,7 +3,7 @@ $(function () {
     'use strict';
 
     module('gridCss');
-    
+
     test('should create a width rule for each column', function () {
 
         var gridId = 'grid0',
@@ -11,8 +11,8 @@ $(function () {
             infos;
 
         infos = [
-            { width : 100, align : 'left' },
-            { width : 42, align : 'right' }
+            { width : 100, align : 'left', index : 0},
+            { width : 42, align : 'right', index : 1 }
         ];
             
         css = app.gridCss(gridId, {
@@ -22,8 +22,13 @@ $(function () {
         });
 
         _.each(infos, function (info, i) {
-            var width = css.rules[i].style.width;
+
+            var style = css.rules[i].style,
+                width = style.width,
+                align = style.textAlign;
+
             ok(width === info.width + 'px', 'expected ' + info.width + 'px but was ' + width);
+            ok(align === info.align, 'expected ' + info.align + ' but was ' + align);
         });
     });
 
