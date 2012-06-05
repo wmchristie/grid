@@ -1,9 +1,11 @@
 (function (app, $, _, undefined) {
     'use strict';
 
+    var grid = app.ui.grid;
+
     _.templateSettings.variable = 'item';
 
-    app.gridTemplates = {
+    grid.templates = {
 
         value : _.template('<td class="col<%= item.c %>"><div class="data"><span title="<%= item.value.replace(item.regex, "") %>"><%= item.value %></span></div></td>'),
         anchor : _.template('<td class="col<%= item.c %>"><div class="data"><span><a href="" title="<%= item.value.replace(item.regex, "") %>"><%= item.value %></a></span></div></td>'),
@@ -41,7 +43,7 @@
 
         headGroup : _.template('<th></th>'),
 
-        gridCss : _.template(
+        css : _.template(
             '<% _.each(item.columns, function (col) { %>' +
             '   #<%= item.gridId %> .col<%= col.index %> .data { width: <%= col.data %>px; text-align: <%= col.align %>; }' +
             '<% }); %>'

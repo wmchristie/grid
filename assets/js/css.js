@@ -1,15 +1,17 @@
 (function (app, $, _, undefined) {
     'use strict';
 
+    var grid = app.ui.grid;
+
     // The following styles can be added the the grouping functionality is added via extension:
     //groupLastColumnStyle = 'border-right:1px solid #9da6b2; margin-right:0; padding-right:7px;', 
     //
     
-    app.gridCss = function (gridId, columns) {
+    grid.css = function (gridId, columns) {
 
         var rules,
             cssWriter,
-            template = app.gridTemplates.gridCss;
+            template = grid.templates.css;
 
         function createMarkup(cols) {
 

@@ -3,6 +3,8 @@
 
     var ui = app.ui;
 
+    ui.grid = {};
+
     ui.Grid = function (options) {
 
         this._container = options.element;

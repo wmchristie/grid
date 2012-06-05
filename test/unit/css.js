@@ -4,7 +4,8 @@ $(function () {
 
     module('gridCss');
 
-    var gridId = 'grid0',
+    var grid = app.ui.grid,
+        gridId = 'grid0',
         css,
         infos;
 
@@ -15,7 +16,7 @@ $(function () {
             { data : 42, align : 'right', index : 1 }
         ];
 
-        return app.gridCss(gridId, {
+        return grid.css(gridId, {
             getWidthInfos : function () {
                 return  infos;
             }
