@@ -1,13 +1,13 @@
 (function (app, $, _, undefined) {
     'use strict';
 
-    var ui = app.ui;
-
-    ui.grid = {};
+    var ui = app.ui,
+        grid = ui.grid = {};
 
     ui.Grid = function (options) {
 
         this._container = options.element;
+        this._dom = grid.dom(this._container);
 
     };
 
