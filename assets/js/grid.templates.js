@@ -1,3 +1,4 @@
+// this file must appear first in the load order after the 'app' file(s)
 (function (app, $, _, undefined) {
     'use strict';
 
@@ -11,6 +12,7 @@
         anchor : _.template('<td class="col<%= item.c %>"><div class="data"><span><a href="" title="<%= item.value.replace(item.regex, "") %>"><%= item.value %></a></span></div></td>'),
         rowLabel : _.template('<td class="branch" colspan="<%= item.colspan %>"><div class="data"><span title="<%= item.value.replace(item.regex, "") %>"><%= item.value %></span></div></td>'),
 
+        // todo : move this out into the twisty module
         twisty : _.template(
             '<td class="twisty">' +
             '   <div class="data">' +
@@ -41,7 +43,7 @@
             '</th>'
         ),
 
-        headGroup : _.template('<th></th>'),
+        headGroup : _.template('<th></th>'), // todo : rename this to 'group'
 
         css : _.template(
             '<% _.each(item.columns, function (col) { %>' +
