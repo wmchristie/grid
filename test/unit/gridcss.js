@@ -11,8 +11,8 @@ $(function () {
     function execute() {
 
         infos = [
-            { width : 100, align : 'left', index : 0},
-            { width : 42, align : 'right', index : 1 }
+            { data : 100, align : 'left', index : 0},
+            { data : 42, align : 'right', index : 1 }
         ];
 
         return app.gridCss(gridId, {
@@ -49,7 +49,7 @@ $(function () {
 
             var width = css.rules[i].style.width;
 
-            ok(width === info.width + 'px', 'expected ' + info.width + 'px but was ' + width);
+            ok(width === info.data + 'px', 'expected ' + info.data + 'px but was ' + (width || 'an empty string'));
 
         });
 
@@ -93,8 +93,8 @@ $(function () {
 
         css = execute();
 
-        infos[0].width += 10;
-        infos[0].width += 20;
+        infos[0].data += 10;
+        infos[0].data += 20;
 
         css.update({
             getWidthInfos : function () {
@@ -106,13 +106,12 @@ $(function () {
 
             var width = css.rules[i].style.width;
 
-            ok(width === info.width + 'px', 'expected ' + info.width + 'px but was ' + width);
+            ok(width === info.data + 'px', 'expected ' + info.data + 'px but was ' + (width || 'an empty string'));
 
         });
 
         css.destroy();
 
     });
-    
 
 });

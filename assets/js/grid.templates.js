@@ -43,7 +43,7 @@
 
         gridCss : _.template(
             '<% _.each(item.columns, function (col) { %>' +
-            '   #<%= item.gridId %> .col<%= col.index %> .data { width: <%= col.width %>px; text-align: <%= col.align %>; }' +
+            '   #<%= item.gridId %> .col<%= col.index %> .data { width: <%= col.data %>px; text-align: <%= col.align %>; }' +
             '<% }); %>'
         )
 
