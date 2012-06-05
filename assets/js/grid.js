@@ -23,34 +23,16 @@
 
             columns = new app.GridColumns(app.data.primaryView.columns, cellPadding),
 
-            cssRuleBuilder = new app.CssRuleBuilder(),
-
-            cssWriter = new app.CssWriter(),
-
             scrollSizer = new app.GridScrollSizer({
                 element : dom.scrollSizer(),
                 rowHeight : rowHeight
             }),
             
-            render = app.gridRender(dom, columns, rowMarkup, headMarkup);
+            render = app.gridRender(dom, columns, rowMarkup, headMarkup),
+            
+            css = app.gridCss(gridId, columns);
 
-        cssRuleBuilder.addRuleFactory('width', function (item) {
-            return item.data + 'px';
-        });
-
-        cssRuleBuilder.addRuleFactory('text-align', function (item) {
-            return item.align;
-        });
-
-        cssRuleBuilder.setSelectorFactory(function (item) {
-            return '#' + gridId + ' .col' + item.index + ' .data';
-        });
-
-        cssRuleBuilder.setAdditionalRules('    #' + gridId + ' .branch .data {}');
-
-        cssWriter.create(columns.getWidthInfos(), cssRuleBuilder);
-
-        columns.setCssRules(cssWriter.getRules());
+        //columns.setCssRules(css.getRules());
 
         scrollSizer.sizeToColumns(columns.getWidthInfos());
         scrollSizer.sizeToRows(rowMarkup);

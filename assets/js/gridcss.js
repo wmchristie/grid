@@ -12,10 +12,12 @@
             template = app.gridTemplates.gridCss;
 
         function createMarkup(cols) {
+
             return template({
                 gridId : gridId,
                 columns : cols.getWidthInfos()
             });
+
         }
 
         cssWriter = app.cssWriter(createMarkup(columns));
