@@ -1,44 +1,67 @@
 (function (app, $, _, undefined) {
     'use strict';
 
-    _.templateSettings.variable = 'item';
+    var ui = app.ui;
 
-    $(function () {
+    ui.Grid = function (options) {
 
-        var markupTime,
-            insertTime,
+        this._container = options.element;
 
-            rowHeight = 25,
-            cellPadding = 19,
+    };
 
-            colStart = 0,
+    ui.Grid.prototype = {
 
-            container = document.getElementById('grid_container'),
+        destroy : function () {
 
-            gridId = container.id || (container.id = _.uniqueId('grid')),
+            if (this._container) {
+                this._container.empty();
+            }
 
-            rowMarkup = new app.RowFactory(rowHeight).create(app.data.records), 
-            headMarkup = new app.HeadFactory().create(app.data.primaryView),
-            dom = app.gridDom(container),
+        },
 
-            columns = new app.GridColumns(app.data.primaryView.columns, cellPadding),
+        setData : function (rows) {
+        },
 
-            scrollSizer = new app.GridScrollSizer({
-                element : dom.scrollSizer(),
-                rowHeight : rowHeight
-            }),
-            
-            render = app.gridRender(dom, columns, rowMarkup, headMarkup),
-            
-            css = app.gridCss(gridId, columns);
+        setDefinition : function (options) {
+        }
 
-        //columns.setCssRules(css.getRules());
+    };
 
-        scrollSizer.sizeToColumns(columns.getWidthInfos());
-        scrollSizer.sizeToRows(rowMarkup);
+/*
 
-        render.show();
+    var markupTime,
+        insertTime,
 
-    });
+        rowHeight = 25,
+        cellPadding = 19,
 
-}(window.app || (window.app = {}), jQuery, _));
+        colStart = 0,
+
+        container = document.getElementById('grid_container'),
+
+        gridId = container.id || (container.id = _.uniqueId('grid')),
+
+        rowMarkup = new app.RowFactory(rowHeight).create(app.data.records), 
+        headMarkup = new app.HeadFactory().create(app.data.primaryView),
+        dom = app.gridDom(container),
+
+        columns = new app.GridColumns(app.data.primaryView.columns, cellPadding),
+
+        scrollSizer = new app.GridScrollSizer({
+            element : dom.scrollSizer(),
+            rowHeight : rowHeight
+        }),
+        
+        render = app.gridRender(dom, columns, rowMarkup, headMarkup),
+        
+        css = app.gridCss(gridId, columns);
+
+    //columns.setCssRules(css.getRules());
+
+    scrollSizer.sizeToColumns(columns.getWidthInfos());
+    scrollSizer.sizeToRows(rowMarkup);
+
+    render.show();
+
+*/
+}(window.app, jQuery, _));
