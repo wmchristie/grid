@@ -1,4 +1,8 @@
-// this file must appear first in the load order after the 'app' file(s)
+// requires grid.js
+// this file must appear first in the load order after the 'grid' file
+
+// app.ui.grid.templates contains templates that may be replace for purposes of customization.  Other templates exist elsewhere that must never be modified by extendions.
+
 (function (app, $, _, undefined) {
     'use strict';
 

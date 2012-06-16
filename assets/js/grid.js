@@ -1,3 +1,4 @@
+// this file must appear first in the load order after the 'app' file(s)
 (function (app, $, _, undefined) {
     'use strict';
 

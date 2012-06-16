@@ -1,15 +1,18 @@
+// requires templates.js
 (function (app, $, _, undefined) {
     'use strict';
 
-    app.gridDom = function (container) {
+    // $container must be a jQuery object that contains a single DOM element
+    app.ui.grid.dom = function ($container) {
 
         var gridClassName = 'data-grid',
+            container = _.first($container),
             headTable,
             bodyTable,
-            thead,
             body,
             sizer,
             portal,
+            scrollSizer,
             template = _.template('<table><<%= item.tag %>><%= item.markup %></<%= item.tag %>></table>'),
             classWasAdded;
 
@@ -23,7 +26,7 @@
                 tag : tag
             });
 
-            newNode = temp.childNodes[0].childNodes[0];
+            newNode = temp.firstChild.firstChild;
 
             table.replaceChild(
                 newNode, // extract the new element
@@ -34,26 +37,23 @@
 
         }
 
-        if ((classWasAdded = ! $(container).hasClass(gridClassName))) {
-            $(container).addClass('data-grid');
+        if ((classWasAdded = ! $container.hasClass(gridClassName))) {
+            $container.addClass('data-grid');
         }
 
-        container.innerHTML = 
+        $container.html(
             '<table><thead></thead></table>' +
             '<div class="portal">' +
                 '<div class="scroll-sizer">' +
                     '<table><tbody></tbody></table>' +
                 '</div>' +
-            '</div>';
+            '</div>'
+        );
 
-        headTable = container.getElementsByTagName('table')[0];
-        bodyTable = container.getElementsByTagName('table')[1];
-
-        thead = headTable.firstChild;
-
-        portal = _.find(container.childNodes, function (node) {
-            return node.className === 'portal';
-        });
+        headTable = container.firstChild;
+        portal = container.childNodes[1];
+        scrollSizer = portal.firstChild;
+        bodyTable = scrollSizer.firstChild;
 
         return {
 
@@ -63,16 +63,12 @@
 
             destroy : function () {
 
-                container.empty();
+                $container.empty();
 
                 if (classWasAdded) {
-                    container.removeClass('data-grid');
+                    $container.removeClass('data-grid');
                 }
 
-            },
-
-            thead : function () {
-                return thead;
             },
 
             portal : function () {
@@ -80,7 +76,11 @@
             },
 
             scrollSizer : function () {
-                return $(portal).find('.scroll-sizer');
+                return scrollSizer;
+            },
+
+            thead : function () {
+                return headTable.firstChild;
             },
 
             writeBody : function (markup) {
@@ -88,7 +88,7 @@
             },
 
             writeHead : function (markup) {
-                return thead = write(headTable, markup, 'thead');
+                return write(headTable, markup, 'thead');
             }
         
         };

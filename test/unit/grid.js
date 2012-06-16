@@ -6,12 +6,40 @@ $(function () {
 
     var grid;
 
-    test('should have a setDefinition function', function () {
-        
+    function container() {
+        return $('#qunit-fixture');
+    }
+
+    function createGrid() {
+
         grid = new app.ui.Grid({
-            element : $('#qunit-fixture')
+            element : container()
         });
 
+    }
+
+    test('should create a table element as the child of the container', function () {
+
+        createGrid();
+
+        ok(container().children().length === 1, 'the container should only contain a single child');
+        ok(container().children('table').length === 1, 'the child of the container should be a table');
+
+        grid.destroy();
+        
+    });
+
+    test('destroy should remove the contents of the container', function () {
+
+        createGrid();
+        grid.destroy();
+        
+    });
+
+    test('should have a setDefinition function', function () {
+
+        createGrid();
+        
         ok(grid.setDefinition instanceof Function);
 
         grid.destroy();
@@ -19,10 +47,8 @@ $(function () {
 
     test('should have a setData function', function () {
         
-        grid = new app.ui.Grid({
-            element : $('#qunit-fixture')
-        });
-
+        createGrid();
+        
         ok(grid.setData instanceof Function);
 
         grid.destroy();
