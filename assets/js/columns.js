@@ -1,78 +1,119 @@
 (function (app, $, _, undefined) {
     'use strict';
 
-    app.GridColumns = function (defs, paddingSize) {
+    var grid = app.ui.grid,
+    
+        // tree item index constants
+        columnInfoIndex = 0,
+        lessThanIndex = 1,
+        greaterThanIndex = 2;
 
-        var widthInfos = this._widthInfos = [],
-            widthInfo,
+    grid.Columns = function (definitions, paddingSize) {
+
+        var columnInfos,
             position = 0,
             previous = 0;
 
-        _.each(defs, function (def, i) {
+        columnInfos = this._columnInfos = _.map(definitions, function (definition, i) {
 
-            widthInfo = widthInfos[i] = {
+            return {
                 index : i,
-                align : def.align,
-                td : def.pixelWidth + paddingSize,
-                data : def.pixelWidth,
-                auto : def.autoWidth,
-                left : (position = position + previous),
-                right : position + def.pixelWidth + paddingSize,
-                def : def
+                align : definition.align,
+                left : (position = position + previous), // must preceed the tdWidth property to insure correct 'previous' value
+                right : position + definition.pixelWidth + paddingSize, // must follow the left property to insure correct 'position' value
+                dataWidth : definition.pixelWidth,
+                autoWidth : definition.autoWidth,
+                tdWidth : (previous = definition.pixelWidth + paddingSize), 
+                definition : definition
             };
-
-            previous = widthInfo.td;
 
         });
 
         this._populateTree();
 
-        this._currentWidthInfo = widthInfos[0];
+        // the first column always starts off as current
+        this._current = columnInfos[0];
 
     };
 
-    app.GridColumns.prototype = {
+    grid.Columns.prototype = {
 
-        _widthInfoIndex : 0,
-        _lessThanIndex : 1,
-        _greaterThanIndex : 2,
+        // returns the number of columns needed to fill the width starting at left
+        count : function (left, width) {
 
-        _findWidthInfo : function (pixel) {
+            var columnInfos = this._columnInfos,
+                max = columnInfos.length,
+                current = this._current,
+                i = current.index,
+                count = 0;
 
-            var widthInfo,
-                widthInfoIndex = this._widthInfoIndex,
-                lessThanIndex = this._lessThanIndex,
-                greaterThanIndex = this._greaterThanIndex,
-                
+            // todo: I no longer understand why we need to reference current here.
+            width += left - current.left;
+
+            while (i < max && width > 0) {
+
+                count++;
+                width -= columnInfos[i++].tdWidth;
+
+            }
+
+            return count;
+
+        },
+
+        getInfoAt : function (left) {
+
+            var current = this._current,
+                changed = current.left > left || current.right < left;
+
+            if (changed) {
+                this._current = this._findColumnInfo(left);
+            }
+
+            return this._current;
+        },
+
+        getInfos : function () {
+            return this._columnInfos;
+        },
+
+        setCssRules : function (rules) {
+
+            _.each(this._columnInfos, function (columnInfo, i) {
+                columnInfo.rule = rules[i];
+            });
+
+        },
+
+        _findColumnInfo : function (pixel) {
+
+            var columnInfo,
                 item = this._tree;
 
             while (true) {
 
-                widthInfo = item[widthInfoIndex];
+                columnInfo = item[columnInfoIndex];
 
-                if (widthInfo.left <= pixel && widthInfo.right >= pixel) {
-                    return widthInfo;
+                if (columnInfo.left <= pixel && columnInfo.right >= pixel) {
+                    return columnInfo;
                 }
                 
-                item = pixel < widthInfo.left ? item[lessThanIndex] : item[greaterThanIndex];
+                item = pixel < columnInfo.left ? item[lessThanIndex] : item[greaterThanIndex];
 
                 if (item.length === 0) {
-                    return pixel < 0 ? _.first(this._widthInfos[0]) : _.last(this._widthInfos);
+                    return pixel < 0 ? _.first(this._columnInfos[0]) : _.last(this._columnInfos);
                 }
 
             }
 
         },
 
+        // creates a binary tree of the columnInfos for rapid lookup by _findColumnInfo
         _populateTree : function () {
 
-            var widthInfos = this._widthInfos,
-                tree = this._tree = [],
+            var columnInfos = this._columnInfos,
+                tree = this._tree = [];
 
-                widthInfoIndex = this._widthInfoIndex,
-                lessThanIndex = this._lessThanIndex,
-                greaterThanIndex = this._greaterThanIndex;
-                
             function segment(item, min, max) {
 
                 var center;
@@ -85,13 +126,13 @@
                 if (min < max) {
 
                     center = Math.ceil((min + max) / 2);
-                    item[widthInfoIndex] = widthInfos[center];
+                    item[columnInfoIndex] = columnInfos[center];
                     segment((item[lessThanIndex] = []), min, center - 1);
                     segment((item[greaterThanIndex] = []), center + 1, max);
 
                 } else {
 
-                    item[widthInfoIndex] = widthInfos[min];
+                    item[columnInfoIndex] = columnInfos[min];
                     item[lessThanIndex] = [];
                     item[greaterThanIndex] = [];
 
@@ -99,55 +140,10 @@
 
             }
 
-            segment(tree, 0, this._widthInfos.length);
-
-        },
-
-        getCount : function (left, width) {
-
-            var widthInfos = this._widthInfos,
-                max = widthInfos.length,
-                current = this._currentWidthInfo,
-                i = current.index,
-                count = 0;
-
-            width += left - current.left;
-
-            while (i < max && width > 0) {
-
-                count++;
-                width -= widthInfos[i++].td;
-
-            }
-
-            return count;
-
-        },
-
-        getWidthInfoAt : function (left) {
-
-            var current = this._currentWidthInfo,
-                changed = current.left > left || current.right < left;
-
-            if (changed) {
-                this._currentWidthInfo = this._findWidthInfo(left);
-            }
-
-            return this._currentWidthInfo;
-        },
-
-        getWidthInfos : function () {
-            return this._widthInfos;
-        },
-
-        setCssRules : function (rules) {
-
-            _.each(this._widthInfos, function (widthInfo, i) {
-                widthInfo.rule = rules[i];
-            });
+            segment(tree, 0, this._columnInfos.length);
 
         }
 
     };
 
-}(window.app || (window.app = {}), jQuery, _));
+}(window.app, jQuery, _));

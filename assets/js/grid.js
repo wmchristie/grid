@@ -7,8 +7,15 @@
 
     ui.Grid = function (options) {
 
-        this._container = options.element;
-        this._dom = grid.dom(this._container);
+        this._options = {};
+        this.options(options);
+        this.options(this._default);
+
+        this._$container = $(options.element);
+        this._container = this._$container[0];
+
+        this.id = this._container.id || (this._container.id = _.uniqueId('grid'));
+        this._dom = grid.dom(this._$container);
 
     };
 
@@ -16,16 +23,36 @@
 
         destroy : function () {
 
-            if (this._container) {
-                this._container.empty();
+            (this._dom && this._dom.destroy());
+
+            this._dom = null;
+            this._container = null;
+
+        },
+
+        data : function (rows) {
+        },
+
+        options : function (options) {
+
+            if (options != null) {
+
+                $.extend(this._options, options);
+                this._applyOptions(options);
+
             }
 
+            return this._options;
+
         },
 
-        setData : function (rows) {
+        _applyOptions : function (options) {
+
         },
 
-        setDefinition : function (options) {
+        _default : {
+            cellPadding : 19,
+            rowHeight : 25
         }
 
     };
