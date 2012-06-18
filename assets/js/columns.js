@@ -38,8 +38,10 @@
 
     grid.Columns.prototype = {
 
-        // returns the number of columns needed to fill the width starting at left
-        count : function (left, width) {
+        // returns the number of columns needed to fill the width starting at pixel
+        // width should be the width of the viewing area.
+        // makeCurrent() must be called before calling count();
+        count : function (pixel, width) {
 
             var columnInfos = this._columnInfos,
                 max = columnInfos.length,
@@ -47,8 +49,8 @@
                 i = current.index,
                 count = 0;
 
-            // todo: I no longer understand why we need to reference current here.
-            width += left - current.left;
+            // width needs to encompass the width of the viewing area plus any of the left column that is scrolled out of view to the left.
+            width += pixel - current.left;
 
             while (i < max && width > 0) {
 
@@ -61,31 +63,7 @@
 
         },
 
-        getInfoAt : function (left) {
-
-            var current = this._current,
-                changed = current.left > left || current.right < left;
-
-            if (changed) {
-                this._current = this._findColumnInfo(left);
-            }
-
-            return this._current;
-        },
-
-        getInfos : function () {
-            return this._columnInfos;
-        },
-
-        setCssRules : function (rules) {
-
-            _.each(this._columnInfos, function (columnInfo, i) {
-                columnInfo.rule = rules[i];
-            });
-
-        },
-
-        _findColumnInfo : function (pixel) {
+        getInfoAt : function (pixel) {
 
             var columnInfo,
                 item = this._tree;
@@ -100,11 +78,30 @@
                 
                 item = pixel < columnInfo.left ? item[lessThanIndex] : item[greaterThanIndex];
 
-                if (item.length === 0) {
-                    return pixel < 0 ? _.first(this._columnInfos[0]) : _.last(this._columnInfos);
+                if (!item[columnInfoIndex]) {
+                    return null;
+                    // not sure how this is going to work yet. if we should return the null then we have to maintain the makeCurrent() method.  If 
+                    // we can return the first or last column when pixel is beyond the range, then we can rename getInfoAt and set this._current to the returned item.
+                    //return pixel < 0 ? _.first(this._columnInfos) : _.last(this._columnInfos);
                 }
 
             }
+
+        },
+
+        getInfos : function () {
+            return this._columnInfos;
+        },
+
+        makeCurrent : function (columnInfo) {
+            this._current = columnInfo;
+        },
+
+        setCssRules : function (rules) {
+
+            _.each(this._columnInfos, function (columnInfo, i) {
+                columnInfo.rule = rules[i];
+            });
 
         },
 
