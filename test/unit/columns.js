@@ -68,22 +68,22 @@ $(function () {
 
     });
 
-    test('getInfoAt() should return the column that contains the pixel position', function () {
+    test('at() should return the column that contains the pixel position', function () {
 
         createColumns();
 
-        equal(columns.getInfoAt(0).definition, definitions[0]);
-        equal(columns.getInfoAt(20).definition, definitions[0]);
-        equal(columns.getInfoAt(38).definition, definitions[0]);
-        equal(columns.getInfoAt(39).definition, definitions[1]);
-        equal(columns.getInfoAt(50).definition, definitions[1]);
-        equal(columns.getInfoAt(97).definition, definitions[1]);
-        equal(columns.getInfoAt(98).definition, definitions[2]);
-        equal(columns.getInfoAt(120).definition, definitions[2]);
-        equal(columns.getInfoAt(177).definition, definitions[2]);
-        equal(columns.getInfoAt(178), null);
-        equal(columns.getInfoAt(500), null);
-        equal(columns.getInfoAt(-10), null);
+        equal(columns.at(0).definition, definitions[0]);
+        equal(columns.at(20).definition, definitions[0]);
+        equal(columns.at(38).definition, definitions[0]);
+        equal(columns.at(39).definition, definitions[1]);
+        equal(columns.at(50).definition, definitions[1]);
+        equal(columns.at(97).definition, definitions[1]);
+        equal(columns.at(98).definition, definitions[2]);
+        equal(columns.at(120).definition, definitions[2]);
+        equal(columns.at(177).definition, definitions[2]);
+        equal(columns.at(178), null);
+        equal(columns.at(500), null);
+        equal(columns.at(-10), null);
 
     });
 

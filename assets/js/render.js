@@ -1,6 +1,7 @@
 (function (app, $, _, undefined) {
     'use strict';
 
+    // todo : rename to createRenderer() and place in the correct namespace
     app.gridRender = function (dom, columns, bodyMarkupBuilder, headMarkupBuilder) {
 
         var portalWidth,
@@ -14,24 +15,28 @@
             colStart,
             colCount,
 
-            widthInfo,
+            columnInfo,
 
             headMarkup,
             bodyMarkup;
 
+        // we rely on the scrollSizer being set to the correct size which limits the scrollbars so that the
+        // 'top' and 'left' parameters never cause an attempt to retrieve a column or row that is outside the 
+        // available range. Thus, there are no guard clauses to insure valid results from columns.at() and 
+        // bodyMarkupBuilder.getRange().
         function show(top, left) {
 
             //var start = new Date();
 
-            widthInfo = columns.getWidthInfoAt(left);
+            columnInfo = columns.at(left);
 
-            bodyTable.style.left = widthInfo.left + 'px';
+            bodyTable.style.left = columnInfo.left + 'px';
             bodyTable.style.top = top - (top % rowHeight) + 'px';
 
             rowRange = bodyMarkupBuilder.getRange(top, portalHeight);
 
-            colStart = widthInfo.index;
-            colCount = columns.getCount(left, portalWidth);
+            colStart = columnInfo.index;
+            colCount = columns.count(left, portalWidth);
 
             bodyMarkup = bodyMarkupBuilder.markup(rowRange.start, rowRange.count, colStart, colCount);
             headMarkup = headMarkupBuilder.col(colStart, colCount);
@@ -43,7 +48,7 @@
             thead = dom.writeHead(headMarkup);
 
             // the thead is replaced when it is written so we have to write it before we can set its new style.left (thank you IE);
-            thead.style.left = widthInfo.left - left + 'px';
+            thead.style.left = columnInfo.left - left + 'px';
 
             dom.writeBody(bodyMarkup);
 

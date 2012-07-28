@@ -6,16 +6,7 @@
         grid = ui.grid = {};
 
     ui.Grid = function (options) {
-
-        this._options = {};
-        this.options(options);
-        this.options(this._default);
-
-        this._$container = $(options.element);
-        this._container = this._$container[0];
-
-        this.id = this._container.id || (this._container.id = _.uniqueId('grid'));
-        this._dom = grid.dom(this._$container);
+        this._initialize(options);
 
     };
 
@@ -24,9 +15,9 @@
         destroy : function () {
 
             (this._dom && this._dom.destroy());
+            (this._columns && this._columns.destroy());
 
-            this._dom = null;
-            this._container = null;
+            this._columns = this._dom = this._container = this._$container = null;
 
         },
 
@@ -35,14 +26,14 @@
 
         options : function (options) {
 
-            if (options != null) {
-
-                $.extend(this._options, options);
-                this._applyOptions(options);
-
+            if (options == null) {
+                return this._options;
             }
 
-            return this._options;
+            _.extend(this._options, options);
+            this._applyOptions(options);
+
+            return this;
 
         },
 
@@ -53,6 +44,19 @@
         _default : {
             cellPadding : 19,
             rowHeight : 25
+        },
+
+        _initialize : function (options) {
+        
+            this._options = {};
+            this.options(_.extend({}, this._default, options));
+
+            this._$container = $(options.element); // jQuery wrapped container
+            this._container = this._$container[0];
+
+            this.id = this._container.id || (this._container.id = _.uniqueId('grid'));
+            this._dom = grid.dom(this._$container);
+
         }
 
     };

@@ -38,6 +38,32 @@
 
     grid.Columns.prototype = {
 
+        at : function (pixel) {
+
+            var columnInfo,
+                item = this._tree;
+
+            while (true) {
+
+                columnInfo = item[columnInfoIndex];
+
+                if (columnInfo.left <= pixel && columnInfo.right >= pixel) {
+                    return columnInfo;
+                }
+                
+                item = pixel < columnInfo.left ? item[lessThanIndex] : item[greaterThanIndex];
+
+                if (!item[columnInfoIndex]) {
+                    return null;
+                    // not sure how this is going to work yet. if we should return the null then we have to maintain the makeCurrent() method.  If 
+                    // we can return the first or last column when pixel is beyond the range, then we can rename 'at()' and set this._current to the returned item.
+                    //return pixel < 0 ? _.first(this._columnInfos) : _.last(this._columnInfos);
+                }
+
+            }
+
+        },
+
         // returns the number of columns needed to fill the width starting at pixel
         // width should be the width of the viewing area.
         // makeCurrent() must be called before calling count();
@@ -63,38 +89,13 @@
 
         },
 
-        getInfoAt : function (pixel) {
-
-            var columnInfo,
-                item = this._tree;
-
-            while (true) {
-
-                columnInfo = item[columnInfoIndex];
-
-                if (columnInfo.left <= pixel && columnInfo.right >= pixel) {
-                    return columnInfo;
-                }
-                
-                item = pixel < columnInfo.left ? item[lessThanIndex] : item[greaterThanIndex];
-
-                if (!item[columnInfoIndex]) {
-                    return null;
-                    // not sure how this is going to work yet. if we should return the null then we have to maintain the makeCurrent() method.  If 
-                    // we can return the first or last column when pixel is beyond the range, then we can rename getInfoAt and set this._current to the returned item.
-                    //return pixel < 0 ? _.first(this._columnInfos) : _.last(this._columnInfos);
-                }
-
-            }
-
-        },
-
         getInfos : function () {
             return this._columnInfos;
         },
 
         makeCurrent : function (columnInfo) {
             this._current = columnInfo;
+            return this;
         },
 
         setCssRules : function (rules) {
